@@ -1,0 +1,5 @@
+cd "$(dirname "$0")"
+cd ..
+
+$(npm bin)/mocha "$@" --compilers coffee:coffee-script --reporter spec --require coffee-script --no-colors
+
