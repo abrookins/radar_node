@@ -30,7 +30,7 @@ app.get '/crimes/near/:lng/:lat', (req, res) ->
       $near:
         $geometry:
           type: "Point"
-          coordinates: [Number(req.params.lng) , Number(req.params.lat)]
+          coordinates: [req.params.lng, req.params.lat]
         $maxDistance: 804.672
   app.crimes.find(options).toArray (err, crimes) ->
     if err
