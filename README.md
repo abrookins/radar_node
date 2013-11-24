@@ -71,7 +71,8 @@ You should see:
     Transfer/sec:      5.60MB
 
 For a comparison, the [Go version](https://github.com/abrookins/radar) of this
-app can do 1249.21 reqs/sec for this benchmark.
+app can do 1249.21 reqs/sec for this benchmark. It's not exactly the same, but
+it's not that much different.
 
 # The API
 
