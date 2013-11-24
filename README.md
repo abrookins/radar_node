@@ -12,7 +12,7 @@ Or without:
 
     coffee app.coffee
 
-You also need Mongo running.
+You also need Mongo running with a [2dsphere spatial index](http://docs.mongodb.org/manual/applications/geospatial-indexes/) on the crimes.geometry field.
 
 # Running tests
 
