@@ -12,8 +12,6 @@ Or without:
 
     coffee app.coffee
 
-You also need Mongo running with a [2dsphere spatial index](http://docs.mongodb.org/manual/applications/geospatial-indexes/) on the crimes.geometry field.
-
 # Running tests
 
     tool/tests
@@ -24,11 +22,7 @@ Or with the node.js debugger:
 
 # Loading data
 
-The repo includes City of Portland crime data from 2011. Load it into Mongo
-like this -- split into two files because Mongo has an input size limit:
-
-    mongoimport --db crimes --collection crimes --file test.json --type json --jsonArray
-    mongoimport --db crimes --collection crimes --file test2.json --type json --jsonArray
+The repo includes City of Portland crime data from 2011.
 
 If you want to convert other crime data from the City's records, obtain a CSV
 file from [Civic Apps](http://civicapps.org/). You can run it through [my
@@ -40,17 +34,9 @@ You can probably deploy to Heroku. I haven't tried it yet. Procfile included!
 
 # Performance
 
-It's absolutely terrible. I have no idea why.
-
-Facts:
-
-* Maxes out at 20 requests/second for the benchmark query
-* Mongo has a 2d-sphere index on the geometry field, with no index misses
-* Mongo query response time is around 50 ms for the first query and 0 ms
-  afterward during the `wrk` benchmark
-* Mongo seems to max out at 40 queries/second from the app during the benchmark
-* Available connections in Mongo is around 1200 with 200 open connections from
-  the app, so the connection pool is working
+It's bad, maxing out at 200 requests/second on good hardware and only getting
+worse at higher concurrency. I started with a MongoDB version (still in the
+"mongo" branch) but could not push that past 20 requests/second.
 
 # Benchmarking with wrk
 
@@ -61,18 +47,18 @@ Benchmark with this command:
 You should see:
 
     Running 30s test @ http://localhost:4000/crimes/near/-122.6554/45.5184/
-      12 threads and 400 connections
+      6 threads and 400 connections
       Thread Stats   Avg      Stdev     Max   +/- Stdev
-        Latency     0.00us    0.00us   0.00us     nan%
-        Req/Sec     0.00      0.00     0.00       nan%
-      239 requests in 30.01s, 168.06MB read
-      Socket errors: connect 157, read 105, write 0, timeout 5468
-    Requests/sec:      7.96
-    Transfer/sec:      5.60MB
+        Latency     3.37s   867.91ms   3.84s    75.44%
+        Req/Sec    19.07     32.21   142.00     82.15%
+      3388 requests in 30.01s, 1.09GB read
+      Socket errors: connect 151, read 248, write 0, timeout 2744
+    Requests/sec:    112.89
+    Transfer/sec:     37.04MB
 
 For a comparison, the [Go version](https://github.com/abrookins/radar) of this
-app can do 1249.21 reqs/sec for this benchmark. It's not exactly the same, but
-it's not that much different.
+app can do 1249.21 reqs/sec for the same benchmark. It's not exactly the same,
+but it's not that much different.
 
 # The API
 
@@ -87,7 +73,6 @@ Response:
 
     [
       {
-        "_id": "528fd5dbd7e972c30fa01b77",
         "geometry": {
           "coordinates": [
             -122.65566800319907,
@@ -107,7 +92,6 @@ Response:
         "type": "Feature"
       },
       {
-        "_id": "528fd5e2d7e972c30fa02675",
         "geometry": {
           "coordinates": [
             -122.65566800319907,

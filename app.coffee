@@ -2,7 +2,7 @@ http = require 'http'
 express = require 'express'
 params = require 'express-params'
 kdt = require 'kdt'
-crimes = require './data/2011_1.json'
+crimes = require './data/2011.json'
 haversine = require 'haversine'
 
 # Create a kd-tree that uses the haversine formula to calculate distance

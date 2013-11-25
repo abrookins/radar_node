@@ -32,7 +32,7 @@ describe 'app', ->
 
   it 'should respond with crimes near a valid location', (done) ->
     expectedStatus = 200
-    expectedDocuments = 217
+    expectedDocuments = 576
     targetPoint =
       longitude: -122.6488921
       latitude: 45.5085219 
