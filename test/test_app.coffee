@@ -11,7 +11,6 @@ EARTH_RADIUS = 3959.0  # Miles
 
 describe 'app', ->
   before (done) ->
-    app.on 'dbReady', =>
       @server = app.listen PORT, (err, result) ->
         if err
           done err
@@ -33,7 +32,7 @@ describe 'app', ->
 
   it 'should respond with crimes near a valid location', (done) ->
     expectedStatus = 200
-    expectedDocuments = 576
+    expectedDocuments = 217
     targetPoint =
       longitude: -122.6488921
       latitude: 45.5085219 
@@ -61,7 +60,7 @@ describe 'app', ->
           latitude: crime.geometry.coordinates[1]
         expectedMaxDistance = 0.5
         distance = haversine(crimePoint, targetPoint, {unit: 'miles'})
-        assert.ok distance <= expectedMaxDistance
+        assert.ok expectedMaxDistance >= distance
 
       done()
 
